@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Mark any "NotReady" Kubernetes node as unhealthy, so that AWS will replace it and
+# your Kubernetes cluster can get on with its life.
+
+unhealthy=0
+
+for node in $(kubectl get nodes | grep NotReady | cut -d' ' -f1); do
+    ec2id=$(aws ec2 describe-instances \
+                    --filters "Name=private-dns-name,Values=$node" \
+                    --query "Reservations[0].Instances[0].InstanceId" | tr -d '"')
+
+    echo "$node == $ec2id"
+
+    aws autoscaling set-instance-health --instance-id $ec2id --health-status Unhealthy
+
+    unhealthy=$(($unhealthy + 1))
+done
+
+echo "Marked unhealthy: $unhealthy"
