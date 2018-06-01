@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Scrape</title>
+    <link href="https://unpkg.com/basscss@8.0.2/css/basscss.min.css" rel="stylesheet">
+</head>
+<body>
+<h1 class="h2">Search Scrape</h1>
+<form action="/" method="GET">
+    Search Term: <input type="text" name="q" value="{{ term }}" />
+</form>
+{% if results %}
+    {% for story in results %}
+        <p>
+            <b><a href="{{ story['url'] }}" target="_blank">{{ story["title"] }}</a></b><br/>
+            <small>
+                {{ story["score"] }} points by {{ story["by"] }}
+                | {{ story["pretty_time"] }}
+                | {{ story["matching_comments"] }} matching comment(s)
+                | <a href="{{ story['discussion'] }}" target="_blank">Discussion</a>
+            </small>
+        </p>
+    {% endfor %}
+{% elif term %}
+    <p>No matches for "{{ term }}"</p>
+{% endif %}
+</body>
+</html>
