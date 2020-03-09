@@ -1,6 +1,6 @@
 # Toybox
 
-Random one-off eng scripts and tools that are useful but not necessarily worthy of there own repository.
+Random one-off eng scripts and tools that are useful but not necessarily worthy of their own repository.
 
 # 2018-06-01
 
